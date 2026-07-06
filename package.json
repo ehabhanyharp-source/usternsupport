@@ -1,5 +1,1 @@
-{
-  "dependencies": {
-    "telegraf": "latest"
-  }
-}
+{"dependencies": {"telegraf": "latest"}}
