@@ -1,21 +1,22 @@
 const { Telegraf } = require('telegraf');
-const bot = new Telegraf('8840523796:AAEAFM5-MBd5Eq2DFBv3WQPjTjXT5V-XOOI');
 
-// تفعيل أمر البدء
-bot.start((ctx) => ctx.reply('البوت يعمل بنجاح!'));
+// التوكن الجديد الخاص بك موضوع مباشرة هنا
+const bot = new Telegraf('8892358205:AAGH4t_I2Mk7eBANZ0_z8fTkmKj4xqxTs6c');
 
-// الرد على أي رسالة
-bot.on('message', (ctx) => {
-    ctx.reply('وصلتني رسالتك!');
+bot.start((ctx) => {
+    ctx.reply('مرحباً بك في بوت Ustern الجديد! أنا جاهز للخدمة.');
+});
+
+bot.on('text', (ctx) => {
+    ctx.reply('لقد استلمت رسالتك بنجاح.');
 });
 
 module.exports = async (req, res) => {
     try {
-        // الرد الفوري لتليجرام لتجنب تعليق الرسالة
         await bot.handleUpdate(req.body);
         return res.status(200).send('OK');
     } catch (err) {
-        console.error(err);
+        console.error('حدث خطأ:', err);
         return res.status(500).send('Error');
     }
 };
