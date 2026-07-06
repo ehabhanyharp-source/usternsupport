@@ -1,22 +1,28 @@
 const { Telegraf } = require('telegraf');
+
+// ضع التوكن الجديد هنا بين العلامتين
 const bot = new Telegraf('8840523796:AAEAFM5-MBd5Eq2DFBv3WQPjTjXT5V-XOOI');
 
-// إعداد الأوامر هنا
-bot.start((ctx) => ctx.reply('يعمل بنجاح!'));
+// الأوامر الخاصة بالبوت
+bot.start((ctx) => {
+    ctx.reply('أهلاً بك! أنا أعمل الآن بنجاح على Vercel.');
+});
 
+bot.on('message', (ctx) => {
+    ctx.reply('لقد استلمت رسالتك!');
+});
+
+// هذا الجزء هو المسؤول عن الربط مع Vercel
 module.exports = async (req, res) => {
     try {
-        // استلام البيانات من تليجرام
-        const update = req.body;
-        
-        // محاولة المعالجة
-        await bot.handleUpdate(update);
-        
-        // الرد على تليجرام أننا استلمنا الرسالة
-        return res.status(200).send('OK');
+        if (req.method === 'POST') {
+            await bot.handleUpdate(req.body);
+            return res.status(200).send('OK');
+        } else {
+            return res.status(200).send('البوت يعمل فقط عبر Webhook');
+        }
     } catch (err) {
-        // إذا حدث خطأ، سنعرفه في الـ Logs
-        console.error("خطأ في البوت:", err);
-        return res.status(500).send('Internal Server Error');
+        console.error('حدث خطأ في معالجة الرسالة:', err);
+        return res.status(500).send('Error');
     }
 };
